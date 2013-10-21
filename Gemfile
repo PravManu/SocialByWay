@@ -7,7 +7,7 @@ gem 'rails', '3.2.11'
 
 #gem 'sqlite3'
 
-gem 'rubyzip'
+gem 'rubyzip', '< 1.0.0'
 
 
 # Gems used only for assets and not required
@@ -39,4 +39,3 @@ gem 'jquery-rails'
 # To use debugger
 # gem 'debugger'
 
-gem 'rubyzip'
