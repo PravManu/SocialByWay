@@ -1,27 +1,26 @@
-=== Plugin Name ===
+SocialByWay Social Plugin Library
+=================================
+
 Contributors: Imaginea
+---------------------------------
 License: MIT
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+---------------------------------
+License URI: http://opensource.org/licenses/MIT
+---------------------------------
 
-Here is a short description of the plugin.  This should be no more than 150 characters.  No markup here.
+SocialByWay is javascript based social plugin library for the site and application developers.
+It provides a common set of interfaces for the application developers who would want to develop their own widgets connecting and using the social sites like Facebook, Flickr, LinkedIn
+---------------------------------
+The folder contains prebuilt files.In order to build SocialByWay Please refer
+https://github.com/Imaginea/SocialByWay#build
+---------------------------------
 
-== Description ==
+Installation
+---------------------------------
+refer docs at http://www.socialbyway.com/document
 
-This is the long description.  No limit, and you can use Markdown (as well as in the following sections).
+Changelog
 
-== Installation ==
+* 1.0.1-beta First Release
 
-This section describes how to install the plugin and get it working.
-
-== Changelog ==
-
-= 1.0 =
-* A change since the previous version.
-* Another change.
-
-
-== Upgrade Notice ==
-
-= 1.0 =
-Upgrade notices describe the reason a user should upgrade.  No more than 300 characters.
-
+---------------------------------
