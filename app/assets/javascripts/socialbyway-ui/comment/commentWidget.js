@@ -28,9 +28,11 @@
       self.$postBtn.on("click", this, this._addPost);
       self.$actionContainer = $('<div/>').attr('class', "action-container");
       self.$actionContainer.append(self.$textBox, self.$postBtn);
-      self.$tabsDiv.append(self.$commentsContainer,self.$actionContainer);
+      self.$tabsDiv.append(self.$commentsContainer, self.$actionContainer);
       self.element.append(self.$tabsDiv);
-      self._populateComments(self);
+      if (self.options.displayComments) {
+        self._populateComments(self);
+      }
     },
     /**
      * @desc Options for the widget.
@@ -60,7 +62,7 @@
       postIdObject: {assetId : '',
                      assetCollectionId : ''},
       displayResponse: false,
-      displayComments: true,
+      displayComments: false,
       displayImage: true,
       displayPost: false
     },
@@ -92,17 +94,17 @@
         populateComments = function (comments) {
           var temp = [];
           comments.forEach(function (comment) {
-            if(!self.options.displayImage) {
+            if (!self.options.displayImage) {
               temp.push("<div class='comment'><span class='frmuser'>" + comment.fromUser + ' : ' + "</span><span class='msg'>" + comment.text + "</span></div>");
               self.$commentsContainer.empty();
               self.$commentsContainer.append(temp);
             } else {
-              var populateCommentsWithImage = function(profilePicUrl){
+              var populateCommentsWithImage = function (profilePicUrl) {
                 temp.push('<div class="comment"><img class="comment-image" src="' + profilePicUrl + '"><span class="frmuser">' + comment.fromUser + ' : ' + "</span><span class='msg'>" + comment.text + "</span></div>");
                 self.$commentsContainer.empty();
                 self.$commentsContainer.append(temp);
               };
-               SBW.api.getProfilePic(self.options.service,comment.fromUserId, populateCommentsWithImage, function(resp){console.log(resp)});
+              SBW.api.getProfilePic(self.options.service, comment.fromUserId, populateCommentsWithImage, function (resp) {console.log(resp); });
             }
           });
 
@@ -110,7 +112,7 @@
         failureCallback = function () {
           self.$commentsContainer.append("<p>Unable to fetch Comments from" + self.options.service + "</p>");
         };
-      SBW.api.getComments(self.options.service, self.options.postIdObject , populateComments, failureCallback);
+      SBW.api.getComments(self.options.service, self.options.postIdObject, populateComments, failureCallback);
     },
     /**
      * @method

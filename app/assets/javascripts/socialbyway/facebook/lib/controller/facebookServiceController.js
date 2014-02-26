@@ -124,25 +124,25 @@ SBW.Controllers.Services.Facebook = SBW.Controllers.Services.ServiceController.e
             service.user.id = response.id;
             service.getProfilePic(null, function(response) {
               service.user.userImage = response;
-            }, function(error) {
+            }, function (error) {
               SBW.logger.debug("Could not fetch image url");
             });
             callback();
           });
         } else {
           window._facebookopen = window.open;
-          window.open = function(url, name, params) {
+          window.open = function (url, name, params) {
             service.authWindowReference = window._facebookopen(url, name, params);
             return service.authWindowReference;
           };
 
           // the user isn't even logged in to Facebook.
-          FB.login(function(response) {
+          FB.login(function (response) {
             if (response.authResponse !== null && !$.isEmptyObject(response.authResponse)) {
-              service.getAccessToken.call(service, response, function(response) {
+              service.getAccessToken.call(service, response, function (response) {
                 service.user.name = response.name;
                 service.user.id = response.id;
-                service.getProfilePic(null, function(response) {
+                service.getProfilePic(null, function (response) {
                   service.user.userImage = response;
                 }, function(error) {
                   SBW.logger.debug("Could not fetch image url");
@@ -676,6 +676,8 @@ SBW.Controllers.Services.Facebook = SBW.Controllers.Services.ServiceController.e
         url = '/' + user + '/groups?access_token=' + service.accessObject['token'];
       } else if (context.type === 'user') {
         url = '/' + user + '?access_token=' + service.accessObject['token'];
+      } else if (context.type === 'post') {
+          url = '/' + context.id + '?access_token=' + service.accessObject['token'];
       }
     }
     FB.api(url, 'get', function(response) {
@@ -731,7 +733,7 @@ SBW.Controllers.Services.Facebook = SBW.Controllers.Services.ServiceController.e
    * @param {Callback} successCallback {@link  SBW.Controllers.Services.ServiceController~getPosts-successCallback Callback} will be called if data is fetched successfully
    * @param {Callback} errorCallback {@link  SBW.Controllers.Services.ServiceController~getPosts-errorCallback Callback} will be called in case of any error while fetching data
    */
-  getPosts: function(userId, successCallback, errorCallback) {
+   getPosts: function(userId, successCallback, errorCallback) {
     var service = this,
       callback = (function(successCallback, errorCallback) {
         return function(isLoggedIn) {
@@ -751,6 +753,34 @@ SBW.Controllers.Services.Facebook = SBW.Controllers.Services.ServiceController.e
         };
       })(successCallback, errorCallback);
     service.checkUserLoggedIn(callback);
+  },
+  /**
+   * @method
+   * @desc  Retrieves a particular activity based on id
+   * @param activityID Id of the activity.
+   * @param {Callback} successCallback {@link  SBW.Controllers.Services.ServiceController~getPostByID-successCallback Callback} will be called if data is fetched successfully
+   * @param {Callback} errorCallback {@link  SBW.Controllers.Services.ServiceController~getPostByID-errorCallback Callback} will be called in case of any error while fetching data
+   */
+  getPostByID: function(activityID, successCallback, errorCallback) {
+      var service = this,
+          callback = (function(successCallback, errorCallback) {
+              return function(isLoggedIn) {
+                  if (isLoggedIn) {
+                      service._getAllData({
+                          type: 'post',
+                          id: activityID
+                      }, successCallback, errorCallback);
+                  } else {
+                      service.startActionHandler(function() {
+                          service._getAllData({
+                              type: 'post',
+                              id: activityID
+                          }, successCallback, errorCallback);
+                      });
+                  }
+              };
+          })(successCallback, errorCallback);
+      service.checkUserLoggedIn(callback);
   },
   /**
    * @method
