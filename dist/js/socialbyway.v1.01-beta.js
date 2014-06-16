@@ -7981,9 +7981,9 @@ SBW.Controllers.Services.Twitter = SBW.Controllers.Services.ServiceController.ex
     this.followStatusUrl = this.apiVersionUrl + "/friendships/show.json";
     this.likeUrl = this.apiVersionUrl + "/favorites/create.json";
     this.unlikeUrl = this.apiVersionUrl + "/favorites/destroy.json";
-    this.requestTokenUrl = "http://api.twitter.com/oauth/request_token";
+    this.requestTokenUrl = "https://api.twitter.com/oauth/request_token";
     this.authorizeUrl = "http://api.twitter.com/oauth/authorize";
-    this.accessTokenUrl = "http://api.twitter.com/oauth/access_token";
+    this.accessTokenUrl = "https://api.twitter.com/oauth/access_token";
     this.getPostUrl = "https://api.twitter.com/1.1/statuses/show/";
     this.accessObject = {
       consumerKey: SBW.Singletons.config.services.Twitter.consumerKey,
@@ -8014,7 +8014,7 @@ SBW.Controllers.Services.Twitter = SBW.Controllers.Services.ServiceController.ex
         service.isUserLoggingIn = false;
       }
     };
-    if (service.authWindowReference === null || service.authWindowReference.closed || service.authWindowReference === undefined) {
+    if (service.authWindowReference === null || service.authWindowReference === undefined || service.authWindowReference.closed) {
       service.authWindowReference = window.open('', 'Twitter' + new Date().getTime(), service.getPopupWindowParams({
         height: 500,
         width: 400
